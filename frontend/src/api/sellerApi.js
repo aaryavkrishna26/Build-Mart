@@ -1,18 +1,13 @@
-import axios from 'axios';
-
-const BASE = 'http://localhost:5000/api/seller';
-
-const getToken = () => localStorage.getItem('token');
-const headers = () => ({ Authorization: `Bearer ${getToken()}` });
+import apiClient from './apiClient';
 
 export const getSellerProfile = () => 
-  axios.get(`${BASE}/profile`, { headers: headers() });
+  apiClient.get('/seller/profile');
 
 export const updateSellerProfile = (data) => 
-  axios.put(`${BASE}/profile`, data, { headers: headers() });
+  apiClient.put('/seller/profile', data);
 
 export const getSellerOrders = () => 
-  axios.get(`${BASE}/orders`, { headers: headers() });
+  apiClient.get('/seller/orders');
 
 export const updateOrderStatus = (orderId, status) =>
-  axios.put(`${BASE}/orders/${orderId}/status`, { status }, { headers: headers() });
+  apiClient.put(`/seller/orders/${orderId}/status`, { status });

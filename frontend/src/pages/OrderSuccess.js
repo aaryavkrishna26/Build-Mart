@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import '../styles/OrderSuccess.css';
 
 const OrderSuccess = () => {
@@ -19,9 +19,7 @@ const OrderSuccess = () => {
           return;
         }
 
-        const response = await axios.get(`/api/orders/${orderId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.get(`/orders/${orderId}`);
 
         setOrder(response.data.order || response.data);
         setLoading(false);

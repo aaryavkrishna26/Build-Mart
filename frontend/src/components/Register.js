@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { useNavigate, Link } from 'react-router-dom';
 import './AuthForms.css';
 
@@ -22,7 +22,7 @@ const Register = ({ setUser }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', form);
+      const res = await apiClient.post('/auth/register', form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userRole', res.data.user.role);
       localStorage.setItem('userName', res.data.user.name);
@@ -39,7 +39,9 @@ const Register = ({ setUser }) => {
         navigate('/');
       }
     } catch (error) {
-      setError(error.response?.data?.error || 'Registration failed. Please try again.');
+      console.error('Register error details:', error);
+      const errorMessage = error.response?.data?.error || error.message || 'Registration failed. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

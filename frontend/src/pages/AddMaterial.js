@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import './AddMaterial.css';
 
 const CATEGORIES = [
@@ -41,9 +41,7 @@ const AddMaterial = () => {
   useEffect(() => {
     const fetchSellerInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/materials/seller-dashboard', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.get('/materials/seller-dashboard');
         setSellerInfo(response.data.shop);
         setLoading(false);
       } catch (error) {
@@ -104,31 +102,22 @@ const AddMaterial = () => {
         return;
       }
 
-      await axios.post(
-        'http://localhost:5000/api/materials',
-        {
-          category: formData.category,
-          price: parseFloat(formData.price),
-          quantity: parseFloat(formData.quantity),
-          unit: formData.unit,
-          description: formData.description,
-          isAvailable: formData.isAvailable,
-          name: formData.category,
-          shopName: sellerInfo.name,
-          location: {
-            city: sellerInfo.location,
-            state: 'India',
-            pincode: '000000',
-            address: ''
-          }
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+      await apiClient.post('/materials', {
+        category: formData.category,
+        price: parseFloat(formData.price),
+        quantity: parseFloat(formData.quantity),
+        unit: formData.unit,
+        description: formData.description,
+        isAvailable: formData.isAvailable,
+        name: formData.category,
+        shopName: sellerInfo.name,
+        location: {
+          city: sellerInfo.location,
+          state: 'India',
+          pincode: '000000',
+          address: ''
         }
-      );
+      });
 
       setSuccess(true);
       setFormData({

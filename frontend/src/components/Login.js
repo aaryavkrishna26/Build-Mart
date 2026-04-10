@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { useNavigate, Link } from 'react-router-dom';
 import './AuthForms.css';
 
@@ -15,7 +15,7 @@ const Login = ({ setUser }) => {
     setLoading(true);
     
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', form);
+      const res = await apiClient.post('/auth/login', form);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userRole', res.data.user.role);
       localStorage.setItem('userName', res.data.user.name);
@@ -31,7 +31,9 @@ const Login = ({ setUser }) => {
         navigate('/');
       }
     } catch (error) {
-      setError(error.response?.data?.error || 'Login failed. Please try again.');
+      console.error('Login error details:', error);
+      const errorMessage = error.response?.data?.error || error.message || 'Login failed. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

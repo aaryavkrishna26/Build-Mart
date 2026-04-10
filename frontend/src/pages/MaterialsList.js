@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { LocationContext } from '../context/LocationContext';
 import { CartContext } from '../context/CartContext';
 import ItemCard from '../components/ItemCard';
@@ -33,7 +33,7 @@ const MaterialsList = () => {
     
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/materials', {
+      const response = await apiClient.get('/materials', {
         params: { city, category, sortBy }
       });
       setMaterials(response.data);
@@ -95,10 +95,7 @@ const MaterialsList = () => {
   const handleRemoveMaterial = async (materialId) => {
     setRemovingMaterial(materialId);
     try {
-      await axios.delete(
-        `http://localhost:5000/api/materials/${materialId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await apiClient.delete(`/materials/${materialId}`);
       setMaterials(materials.filter(m => m._id !== materialId));
       setRemoveConfirmId(null);
       showToast('✅ Material removed successfully!', 'success');

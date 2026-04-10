@@ -1,14 +1,26 @@
 import axios from 'axios';
 
-// For Vercel deployment, API calls to /api will be routed to the backend
-// For local development, set REACT_APP_API_URL=http://localhost:5000
-const API_BASE_URL = process.env.REACT_APP_API_URL || 
-  (typeof window !== 'undefined' && window.location.hostname === 'localhost' 
-    ? 'http://localhost:5000' 
-    : '/api');
+// API Base URL configuration
+// Environment variable: REACT_APP_API_URL
+// Default values:
+//   - Local development: http://localhost:5000/api
+//   - Production: https://build-mart-production-a9e7.up.railway.app/api
+const getBaseURL = () => {
+  const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  if (isLocalhost) {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://build-mart-production-a9e7.up.railway.app/api';
+};
+
+const API_URL = getBaseURL();
 
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_URL,
+  withCredentials: true, // Include cookies in requests
 });
 
 // Add auth token to all requests
@@ -20,4 +32,20 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+// Error handling interceptor
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Clear auth data if token is invalid
+      localStorage.removeItem('token');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('userId');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default apiClient;
+export { API_URL };

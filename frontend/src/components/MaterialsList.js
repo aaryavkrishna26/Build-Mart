@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { useSearchParams } from 'react-router-dom';
 
 const MaterialsList = () => {
@@ -12,10 +12,9 @@ const MaterialsList = () => {
     const fetchMaterials = async () => {
       try {
         setLoading(true);
-        const url = location 
-          ? `http://localhost:5000/api/materials?location=${encodeURIComponent(location)}`
-          : 'http://localhost:5000/api/materials';
-        const res = await axios.get(url);
+        const res = await apiClient.get('/materials', {
+          params: location ? { location } : {}
+        });
         setMaterials(res.data);
       } catch (error) {
         console.error('Error fetching materials', error);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 
 const AddMaterial = () => {
   const UNIT_OPTIONS = ['per bag', 'per kg', 'per ton', 'per meter', 'per sqft', 'per liter', 'per piece', 'per bundle'];
@@ -10,10 +10,7 @@ const AddMaterial = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/materials', form, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await apiClient.post('/materials', form);
       alert('✅ Material listed successfully!');
       setForm({ description: '', price: '', quantity: '', unit: 'per bag' });
     } catch (error) {

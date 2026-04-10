@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import './OrderConfirmation.css';
 
 const OrderConfirmation = () => {
@@ -22,10 +22,7 @@ const OrderConfirmation = () => {
 
   const fetchOrder = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/orders/${orderId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await apiClient.get(`/orders/${orderId}`);
       setOrder(response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to load order');

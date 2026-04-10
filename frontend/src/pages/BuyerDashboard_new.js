@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { CartContext } from '../context/CartContext';
 import './BuyerDashboard.css';
 
@@ -27,9 +27,7 @@ const BuyerDashboard = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await apiClient.get('/profile');
       setUserProfile(response.data);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -39,9 +37,7 @@ const BuyerDashboard = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/orders', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await apiClient.get('/orders');
       setOrders(response.data || []);
     } catch (error) {
       console.error('Error fetching orders:', error);

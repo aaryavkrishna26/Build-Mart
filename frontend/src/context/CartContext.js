@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 
 export const CartContext = createContext();
 
@@ -73,11 +73,7 @@ export const CartProvider = ({ children }) => {
 
   const applyCoupon = async (couponCode) => {
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/coupons/apply',
-        { couponCode },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await apiClient.post('/coupons/apply', { couponCode });
       return { success: true, message: response.data.message, discount: response.data.discount };
     } catch (error) {
       return { 

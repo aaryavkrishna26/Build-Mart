@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import { CartContext } from '../context/CartContext';
 import './Checkout.css';
 
@@ -49,9 +49,7 @@ const Checkout = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await apiClient.get('/profile');
       setUserProfile(response.data);
       setFormData(prev => ({
         ...prev,
@@ -134,11 +132,7 @@ const Checkout = () => {
         }
       };
 
-      const response = await axios.post(
-        'http://localhost:5000/api/orders/create',
-        orderData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await apiClient.post('/orders/create', orderData);
 
       await clearCart();
       navigate(`/order-success/${response.data.order._id}`);

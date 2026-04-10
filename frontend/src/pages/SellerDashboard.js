@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../api/apiClient';
 import './SellerDashboard.css';
 
 const SellerDashboard = () => {
@@ -20,9 +20,7 @@ const SellerDashboard = () => {
 
   const fetchSellerData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/materials/seller-dashboard', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await apiClient.get('/materials/seller-dashboard');
       setShop(response.data.shop);
       setMaterials(response.data.materials);
       setLoading(false);
@@ -46,11 +44,7 @@ const SellerDashboard = () => {
 
   const handleSaveMaterial = async (materialId) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/materials/${materialId}`,
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await apiClient.put(`/materials/${materialId}`, formData);
 
       // Update local state
       setMaterials(materials.map(m => 
