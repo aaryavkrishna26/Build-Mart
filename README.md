@@ -23,18 +23,4 @@ Seller Dashboard: Comprehensive interface for sellers to add, update, and manage
 
 Order Management: Full tracking from cart to order confirmation.
 
-Build-Mart/
-├── frontend/               # React SPA
-│   ├── public/             # Static assets
-│   └── src/
-│       ├── api/            # Centralized API client & logic
-│       ├── components/     # Reusable UI elements
-│       ├── context/        # State management (Cart, Location)
-│       └── pages/          # Individual route components
-├── backend/                # Express API
-│   ├── models/             # Mongoose schemas (User, Material, Order)
-│   ├── routes/             # API endpoints
-│   └── server.js           # Main entry point & Middleware
-└── vercel.json             # Deployment configuration
-
 Website link: https://build-mart-react-app.vercel.app/
