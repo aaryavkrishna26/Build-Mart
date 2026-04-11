@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://build-mart-production-a9e7.up.railway.app';
+const API_BASE_URL = 'https://build-mart-production-a9e7.up.railway.app/api';
 
 console.log('API Base URL:', API_BASE_URL);
 
