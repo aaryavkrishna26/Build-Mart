@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// HARDCODED PRODUCTION URL - No localhost fallback!
+// This is the ONLY URL that will ever be used
 const API_BASE_URL = 'https://build-mart-production-a9e7.up.railway.app';
 
+// FORCE log to ensure we're using correct URL
+console.warn('⚠️ CRITICAL: Frontend API URL is:', API_BASE_URL);
+console.error('🔗 ALL requests will go to:', API_BASE_URL);
 console.log('🚀 API Client Initialized');
 console.log('Environment:', process.env.NODE_ENV);
 console.log('API Base URL:', API_BASE_URL);
