@@ -58,14 +58,6 @@ const Checkout = () => {
         pincode: response.data.pincode || '',
         street: response.data.address || ''
       }));
-        ...prev,
-        fullName: response.data.name || '',
-        mobile: response.data.phone || '',
-        city: response.data.city || '',
-        state: response.data.state || '',
-        street: response.data.address || '',
-        pincode: response.data.pincode || ''
-      }));
     } catch (error) {
       console.error('Error fetching profile:', error);
     }
